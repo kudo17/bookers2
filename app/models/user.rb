@@ -9,6 +9,7 @@ class User < ApplicationRecord
   
   has_one_attached :profile_image
   has_many :books, dependent: :destroy
+  has_many :favorites, dependent: :destroy
   
   def get_profile_image(width, height)
    file_path = Rails.root.join('app/assets/images/default-image.jpg')
@@ -20,6 +21,9 @@ class User < ApplicationRecord
     profile_image.variant(resize_to_limit: [width, height]).processed
   end
   
+  def favorited_by?(user)
+    favorites.exists?(user_id: user.id)
+  end
 end
 
 
